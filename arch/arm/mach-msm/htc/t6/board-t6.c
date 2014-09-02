@@ -977,7 +977,7 @@ static int msm_hsusb_vbus_power(bool on)
 	return 0;
 }
 
-static struct msm_otg_platform_data msm_otg_pdata = {
+static struct msm_otg_platform_data msm_otg_usb1_pdata = {
 	.mode			= USB_OTG,
 	.otg_control		= OTG_PMIC_CONTROL,
 	.phy_type		= SNPS_28NM_INTEGRATED_PHY,
@@ -988,6 +988,27 @@ static struct msm_otg_platform_data msm_otg_pdata = {
 	.setup_gpio		= msm_hsusb_setup_gpio,
 	.ldo_power_collapse	= POWER_COLLAPSE_LDO1V8,
 };
+
+static struct platform_device *usb_common_devices[] __initdata = {
+	&apq8064_device_usb1_otg,
+	&apq8064_device_usb3_otg,
+	&apq8064_device_usb4_otg,
+	&apq8064_device_hsusb_usb1_host,
+	&apq8064_device_hsusb_usb3_host,
+	&apq8064_device_hsusb_usb4_host,
+	&apq8064_device_gadget_usb1_peripheral,
+	&android_usb_device
+};
+
+static void __init apq8064_usb_otg_init(void)
+{
+	apq8064_device_usb1_otg.dev.platform_data = &msm_otg_usb1_pdata;
+
+	if (machine_is_apq8064_adp_2() || machine_is_apq8064_adp2_es2() ||
+			machine_is_apq8064_mplatform())
+		platform_add_devices(usb_common_devices,
+				ARRAY_SIZE(usb_common_devices));
+}
 
 static int64_t t6_get_usbid_adc(void)
 {
@@ -1083,7 +1104,7 @@ void t6_add_usb_devices(void)
 {
 	printk(KERN_INFO "%s rev: %d\n", __func__, system_rev);
 
-	platform_device_register(&apq8064_device_gadget_peripheral);
+	platform_device_register(&apq8064_device_gadget_usb1_peripheral);
 	platform_device_register(&android_usb_device);
 }
 
@@ -2928,8 +2949,8 @@ static struct platform_device *common_devices[] __initdata = {
 	&apq8064_device_ssbi_pmic1,
 	&apq8064_device_ssbi_pmic2,
 	&msm_device_smd_apq8064,
-	&apq8064_device_otg,
-	&apq8064_device_hsusb_host,
+	&apq8064_device_usb1_otg,
+	&apq8064_device_hsusb_usb1_host,
 	&msm_device_wcnss_wlan,
 	&apq8064_fmem_device,
 #ifdef CONFIG_ANDROID_PMEM
@@ -4508,7 +4529,7 @@ static void __init t6_common_init(void)
 
 	if (system_rev >= 0x80)
 		msm_otg_pdata.phy_init_seq = phy_init_seq_pvt;
-	apq8064_device_otg.dev.platform_data = &msm_otg_pdata;
+	apq8064_usb_otg_init();
 	t6_init_buses();
 #ifdef CONFIG_BT
 	bt_export_bd_address();

@@ -37,15 +37,15 @@ VREG_CONSUMERS(L2) = {
 };
 VREG_CONSUMERS(L3) = {
 	REGULATOR_SUPPLY("8921_l3",		NULL),
-	REGULATOR_SUPPLY("HSUSB_3p3",		"msm_otg"),
-	REGULATOR_SUPPLY("HSUSB_3p3",		"msm_ehci_host.0"),
-	REGULATOR_SUPPLY("HSUSB_3p3",		"msm_ehci_host.1"),
+	REGULATOR_SUPPLY("HSUSB_3p3",		"msm_otg.1"),
+	REGULATOR_SUPPLY("HSUSB_3p3",		"msm_otg.3"),
+	REGULATOR_SUPPLY("HSUSB_3p3",		"msm_otg.4"),
 };
 VREG_CONSUMERS(L4) = {
 	REGULATOR_SUPPLY("8921_l4",		NULL),
-	REGULATOR_SUPPLY("HSUSB_1p8",		"msm_otg"),
-	REGULATOR_SUPPLY("HSUSB_1p8",		"msm_ehci_host.0"),
-	REGULATOR_SUPPLY("HSUSB_1p8",		"msm_ehci_host.1"),
+	REGULATOR_SUPPLY("HSUSB_1p8",		"msm_otg.1"),
+	REGULATOR_SUPPLY("HSUSB_1p8",		"msm_otg.3"),
+	REGULATOR_SUPPLY("HSUSB_1p8",		"msm_otg.4"),
 	REGULATOR_SUPPLY("iris_vddxo",		"wcnss_wlan.0"),
 };
 VREG_CONSUMERS(L5) = {
@@ -153,9 +153,9 @@ VREG_CONSUMERS(S2) = {
 };
 VREG_CONSUMERS(S3) = {
 	REGULATOR_SUPPLY("8921_s3",		NULL),
-	REGULATOR_SUPPLY("HSUSB_VDDCX",		"msm_otg"),
-	REGULATOR_SUPPLY("HSUSB_VDDCX",		"msm_ehci_host.0"),
-	REGULATOR_SUPPLY("HSUSB_VDDCX",		"msm_ehci_host.1"),
+	REGULATOR_SUPPLY("HSUSB_VDDCX",		"msm_otg.1"),
+	REGULATOR_SUPPLY("HSUSB_VDDCX",		"msm_otg.3"),
+	REGULATOR_SUPPLY("HSUSB_VDDCX",		"msm_otg.4"),,
 	REGULATOR_SUPPLY("HSIC_VDDCX",		"msm_hsic_host"),
 	REGULATOR_SUPPLY("riva_vddcx",		"wcnss_wlan.0"),
 };
@@ -221,7 +221,7 @@ VREG_CONSUMERS(LVS7) = {
 };
 VREG_CONSUMERS(USB_OTG) = {
 	REGULATOR_SUPPLY("8921_usb_otg",	NULL),
-	REGULATOR_SUPPLY("vbus_otg",		"msm_otg"),
+	REGULATOR_SUPPLY("vbus_otg",		"msm_otg.1"),
 };
 VREG_CONSUMERS(HDMI_MVS) = {
 	REGULATOR_SUPPLY("8921_hdmi_mvs",	NULL),
