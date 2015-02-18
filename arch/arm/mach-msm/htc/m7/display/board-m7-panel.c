@@ -312,6 +312,11 @@ static int mipi_dsi_panel_power(int on)
 
 	PR_DISP_INFO("%s: on=%d\n", __func__, on);
 
+	if (machine_is_apq8064_adp_2() ||
+		machine_is_apq8064_adp2_es2() ||
+		machine_is_apq8064_adp2_es2p5())
+		return 0;
+
 	if (!dsi_power_on) {
 		reg_lvs5 = regulator_get(&msm_mipi_dsi1_device.dev,
 				"dsi1_vddio");
@@ -484,8 +489,19 @@ static struct msm_bus_scale_pdata dtv_bus_scale_pdata = {
 	.name = "dtv",
 };
 
+static bool is_automotive_board(void)
+{
+	if (machine_is_apq8064_adp_2() ||
+		machine_is_apq8064_adp2_es2() ||
+		machine_is_apq8064_adp2_es2p5()) {
+		return true;
+	}
+	return false;
+}
+
 static struct lcdc_platform_data dtv_pdata = {
 	.bus_scale_table = &dtv_bus_scale_pdata,
+	.is_automotive_board = is_automotive_board,
 };
 
 #ifdef CONFIG_FB_MSM_HDMI_MSM_PANEL
