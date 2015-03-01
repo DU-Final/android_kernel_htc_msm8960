@@ -1,4 +1,4 @@
-/* Copyright (c) 2012-2013, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2012-2014, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -183,7 +183,6 @@ static struct msm_gpiomux_config apq8064_cam_common_configs[] = {
 		},
 	},
 };
-
 
 #define VFE_CAMIF_TIMER1_GPIO 3
 #define VFE_CAMIF_TIMER2_GPIO 1
@@ -440,7 +439,8 @@ static struct camera_vreg_t apq_8064_cam_vreg[] = {
 };
 
 #define CAML_RSTN PM8921_GPIO_PM_TO_SYS(28)
-#define CAMR_RSTN 34
+/* PMM 8920 GPIO_27 for ADV_RESET_N */
+#define CAMR_RSTN PM8921_MPP_PM_TO_SYS(27)
 
 static struct gpio apq8064_common_cam_gpio[] = {
 };
@@ -518,7 +518,6 @@ static struct msm_actuator_info msm_act_main_cam_1_info = {
 	.vcm_pwd        = 0,
 	.vcm_enable     = 0,
 };
-
 
 static struct msm_camera_i2c_conf apq8064_front_cam_i2c_conf = {
 	.use_i2c_mux = 1,
@@ -728,11 +727,18 @@ void __init apq8064_init_cam(void)
 	/* for SGLTE2 platform, do not configure i2c/gpiomux gsbi4 is used for
 	 * some other purpose */
 	if (socinfo_get_platform_subtype() != PLATFORM_SUBTYPE_SGLTE2) {
-		msm_gpiomux_install(apq8064_cam_common_configs,
-			ARRAY_SIZE(apq8064_cam_common_configs));
+		if (machine_is_apq8064_mplatform()) {
+		} else if (!(machine_is_apq8064_adp_2() ||
+			machine_is_apq8064_adp2_es2() ||
+			machine_is_apq8064_adp2_es2p5())) {
+			msm_gpiomux_install(apq8064_cam_common_configs,
+					ARRAY_SIZE(apq8064_cam_common_configs));
+		}
 	}
 
-	if (machine_is_apq8064_cdp()) {
+	if (machine_is_apq8064_cdp() || machine_is_apq8064_adp_2() ||
+		machine_is_apq8064_adp2_es2()
+		|| machine_is_apq8064_adp2_es2p5()) {
 		sensor_board_info_imx074.mount_angle = 0;
 		sensor_board_info_mt9m114.mount_angle = 0;
 	} else if (machine_is_apq8064_liquid())

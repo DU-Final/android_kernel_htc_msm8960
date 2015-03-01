@@ -2,7 +2,7 @@
  *
  * Copyright (C) 2008 Google, Inc.
  * Author: Brian Swetland <swetland@google.com>
- * Copyright (c) 2009-2012, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2009-2012, 2014 The Linux Foundation. All rights reserved.
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -234,6 +234,9 @@ struct msm_otg_platform_data {
 #endif
 };
 
+/* phy related flags */
+#define ENABLE_DP_MANUAL_PULLUP	BIT(0)
+
 /* Timeout (in msec) values (min - max) associated with OTG timers */
 
 #define TA_WAIT_VRISE	100	/* ( - 100)  */
@@ -317,6 +320,12 @@ struct msm_otg {
 	struct clk *pclk;
 	struct clk *phy_reset_clk;
 	struct clk *core_clk;
+	/* usb Regulators */
+	struct regulator *hsusb_3p3;
+	struct regulator *hsusb_1p8;
+	struct regulator *hsusb_vddcx;
+	struct regulator *vbus_otg;
+	struct regulator *mhl_usb_hs_switch;
 	void __iomem *regs;
 #define ID		0
 #define B_SESS_VLD	1
@@ -483,6 +492,9 @@ enum usb_bam {
 	HSUSB_BAM = 0,
 	HSIC_BAM,
 };
+
+/* for usb host controller driver */
+extern struct usb_phy *msm_usb_get_transceiver(int);
 
 #ifdef CONFIG_USB_DWC3_MSM
 int msm_ep_config(struct usb_ep *ep);

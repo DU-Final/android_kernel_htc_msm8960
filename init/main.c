@@ -80,6 +80,10 @@
 #include <asm/smp.h>
 #endif
 
+#ifdef CONFIG_BOOT_TIME_MARKER
+#include <mach/board.h>
+#endif
+
 static int kernel_init(void *);
 
 extern void init_IRQ(void);
@@ -387,6 +391,12 @@ static noinline void __init_refok rest_init(void)
 	cpu_idle();
 }
 
+/* Splash screen Boot marker value from LK */
+#ifdef CONFIG_BOOT_TIME_MARKER
+#define MAX_SS_LK_MARKER_SIZE 16
+char lk_splash_val[MAX_SS_LK_MARKER_SIZE] = "0";
+#endif
+
 /* Check for early params. */
 static int __init do_early_param(char *param, char *val)
 {
@@ -401,6 +411,10 @@ static int __init do_early_param(char *param, char *val)
 				printk(KERN_WARNING
 				       "Malformed early option '%s'\n", param);
 		}
+#ifdef CONFIG_BOOT_TIME_MARKER
+		if (strcmp(param, "LK_splash") == 0)
+			strlcpy(lk_splash_val, val, sizeof(lk_splash_val));
+#endif
 	}
 	/* We accept everything at this stage. */
 	return 0;
@@ -639,6 +653,9 @@ asmlinkage void __init start_kernel(void)
 	if (efi_enabled(EFI_RUNTIME_SERVICES))
 		efi_free_boot_services();
 
+#ifdef CONFIG_BOOT_TIME_MARKER
+	init_marker_proc_fs();
+#endif
 	ftrace_init();
 
 	/* Do the rest non-__init'ed, we're now alive */

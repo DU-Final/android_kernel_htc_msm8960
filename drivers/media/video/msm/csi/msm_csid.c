@@ -56,6 +56,8 @@
 
 #define DBG_CSID 1
 
+struct csid_device *lsh_csid_dev;
+
 static int msm_csid_cid_lut(
 	struct msm_camera_csid_lut_params *csid_lut_params,
 	void __iomem *csidbase)
@@ -169,7 +171,6 @@ static int msm_csid_init(struct v4l2_subdev *sd, uint32_t *csid_version)
 		rc = -ENOMEM;
 		return rc;
 	}
-
 	csid_dev->base = ioremap(csid_dev->mem->start,
 		resource_size(csid_dev->mem));
 	if (!csid_dev->base) {

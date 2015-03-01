@@ -1,4 +1,4 @@
-/* Copyright (c) 2008-2013, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2008-2014, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -53,6 +53,7 @@ typedef enum {
 	DISPLAY_1 = 0,		/* attached as first device */
 	DISPLAY_2,		/* attached on second device */
 	DISPLAY_3,              /* attached on third writeback device */
+	DISPLAY_4,		/* attached on third dsi/lvds device */
 	MAX_PHYS_TARGET_NUM,
 } DISP_TARGET_PHYS;
 
@@ -238,5 +239,7 @@ int lcdc_device_register(struct msm_panel_info *pinfo);
 
 int mddi_toshiba_device_register(struct msm_panel_info *pinfo,
 					u32 channel, u32 panel);
+int mipi_dsi_i2c_video_wvga_device_register(u32 pdest);
+int mipi_dsi_i2c_video_xga_device_register(u32 pdest);
 
 #endif /* MSM_FB_PANEL_H */

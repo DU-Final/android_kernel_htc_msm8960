@@ -168,8 +168,6 @@ enum vfe_output_state {
 	VFE_STATE_STARTED,
 	VFE_STATE_STOP_REQUESTED,
 	VFE_STATE_STOPPED,
-	VFE_STATE_HW_STOP_REQUESTED,
-	VFE_STATE_HW_STOPPED,
 };
 
 #define V32_CAMIF_OFF             0x000001E4
@@ -1002,6 +1000,8 @@ struct vfe_cmd_stats_ack {
 
 
 #define VFE_STATS_BUFFER_COUNT            3
+extern
+void vfe32_process_output_path_irq_rdi1_only(struct axi_ctrl_t *axi_ctrl);
 
 struct vfe_cmd_stats_buf {
 	uint32_t statsBuf[VFE_STATS_BUFFER_COUNT];

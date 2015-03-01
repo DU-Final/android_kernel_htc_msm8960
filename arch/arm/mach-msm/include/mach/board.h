@@ -1,7 +1,7 @@
 /* arch/arm/mach-msm/include/mach/board.h
  *
  * Copyright (C) 2007 Google, Inc.
- * Copyright (c) 2008-2013, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2008-2015, The Linux Foundation. All rights reserved.
  * Author: Brian Swetland <swetland@google.com>
  *
  * This software is licensed under the terms of the GNU General Public
@@ -28,6 +28,19 @@
 #include <mach/msm_bus.h>
 #ifdef CONFIG_MACH_HTC
 #include <mach/board-ext-htc.h>
+#endif
+
+#ifdef CONFIG_BOOT_TIME_MARKER
+#include "../mach-msm/timer.h"
+#include <linux/proc_fs.h>
+#include <asm/uaccess.h>
+#define TIMER_KHZ 32768
+
+int init_marker_proc_fs(void);
+void place_marker(char *name);
+extern char lk_splash_val[];
+#else
+void place_marker(char *name);
 #endif
 
 struct msm_camera_io_ext {
@@ -476,6 +489,8 @@ struct msm_panel_common_pdata {
 	char cont_splash_enabled;
 	u32 splash_screen_addr;
 	u32 splash_screen_size;
+	u32 ext_splash_screen_addr;
+	u32 ext_splash_screen_size;
 	char mdp_iommu_split_domain;
 };
 
@@ -489,6 +504,7 @@ struct lcdc_platform_data {
 	struct msm_bus_scale_pdata *bus_scale_table;
 #endif
 	int (*lvds_pixel_remap)(void);
+	bool (*is_automotive_board)(void);
 };
 
 struct tvenc_platform_data {
@@ -547,6 +563,10 @@ struct msm_wfd_platform_data {
 	char (*wfd_check_mdp_iommu_split)(void);
 };
 
+struct mipi_dsi_i2c_platform_data {
+	int pd_gpio;
+};
+
 #define PANEL_NAME_MAX_LEN 50
 struct msm_fb_platform_data {
 	int (*detect_client)(const char *name);
@@ -569,6 +589,7 @@ struct msm_hdmi_platform_data {
 	int (*init_irq)(void);
 	bool (*check_hdcp_hw_support)(void);
 	bool (*source)(void);
+	bool (*splash_is_enabled)(void);
 	bool is_mhl_enabled;
 #if defined(CONFIG_MACH_HTC) && defined(CONFIG_FB_MSM_HDMI_MHL)
 	mhl_driving_params *driving_params;

@@ -15,6 +15,7 @@ else
 endif
 obj-$(CONFIG_MSM_CAMERA) += msm_axi_qos.o gemini/ swfv/
 obj-$(CONFIG_MSM_CAMERA_FLASH) += flash.o
+obj-$(CONFIG_SWITCH_REVERSE) += adp_camera.o
 obj-$(CONFIG_ARCH_MSM_ARM11) += msm_vfe7x.o msm_io7x.o
 ifeq ($(CONFIG_MSM_CAMERA_V4L2),y)
   obj-$(CONFIG_ARCH_MSM7X27A) += msm_vfe7x27a_v4l2.o msm_io_7x27a_v4l2.o

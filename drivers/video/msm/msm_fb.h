@@ -228,6 +228,7 @@ struct msm_fb_data_type {
 	struct work_struct sre_work;
 	struct timer_list sre_update_timer;
 #endif
+	boolean bf_supported;
 };
 struct msm_fb_backup_type {
 	struct fb_info info;
