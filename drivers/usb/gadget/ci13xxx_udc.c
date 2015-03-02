@@ -2357,8 +2357,6 @@ static void isr_suspend_handler(struct ci13xxx *udc)
  */
 static void isr_get_status_complete(struct usb_ep *ep, struct usb_request *req)
 {
-	struct ci13xxx_ep *mEp = container_of(ep, struct ci13xxx_ep, ep);
-	struct ci13xxx *udc = mEp->udc;
 
 	trace("%p, %p", ep, req);
 
@@ -2921,7 +2919,6 @@ static struct usb_request *ep_alloc_request(struct usb_ep *ep, gfp_t gfp_flags)
 {
 	struct ci13xxx_ep  *mEp  = container_of(ep, struct ci13xxx_ep, ep);
 	struct ci13xxx_req *mReq = NULL;
-	struct ci13xxx *udc = mEp->udc;
 
 	trace("%p, %i", ep, gfp_flags);
 
@@ -2957,7 +2954,6 @@ static void ep_free_request(struct usb_ep *ep, struct usb_request *req)
 {
 	struct ci13xxx_ep  *mEp  = container_of(ep,  struct ci13xxx_ep, ep);
 	struct ci13xxx_req *mReq = container_of(req, struct ci13xxx_req, req);
-	struct ci13xxx *udc = mEp->udc;
 	unsigned long flags;
 
 	trace("%p, %p", ep, req);
@@ -3232,7 +3228,6 @@ static int ep_set_wedge(struct usb_ep *ep)
 static void ep_fifo_flush(struct usb_ep *ep)
 {
 	struct ci13xxx_ep *mEp = container_of(ep, struct ci13xxx_ep, ep);
-	struct ci13xxx *udc = mEp->udc;
 	unsigned long flags;
 
 	trace("%p", ep);
@@ -3652,7 +3647,6 @@ static irqreturn_t udc_irq(int irq, struct platform_device *pdev)
  */
 static void udc_release(struct device *dev)
 {
-	struct ci13xxx *udc = container_of(dev, struct ci13xxx, gadget.dev);
 
 	trace("%p", dev);
 
