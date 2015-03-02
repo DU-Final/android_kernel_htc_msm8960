@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2015, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2010-2014, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -2109,17 +2109,16 @@ static int hdmi_msm_read_edid_block(int block, uint8 *edid_buf)
 
 static int hdmi_msm_read_edid(void)
 {
-	int status = 0;
+	int status;
 
-	if (!external_common_state->skip_edid) {
-		msm_hdmi_init_ddc();
-		/* Looks like we need to turn on HDMI engine before any
-		 * DDC transaction */
-		if (!hdmi_msm_is_power_on()) {
-			DEV_ERR("%s: failed: HDMI power is off", __func__);
-			status = -ENXIO;
-			goto error;
-		}
+	msm_hdmi_init_ddc();
+	/* Looks like we need to turn on HDMI engine before any
+	 * DDC transaction */
+	if (!hdmi_msm_is_power_on()) {
+		DEV_ERR("%s: failed: HDMI power is off", __func__);
+		status = -ENXIO;
+		goto error;
+	}
 
 	external_common_state->read_edid_block = hdmi_msm_read_edid_block;
 	status = hdmi_common_read_edid();

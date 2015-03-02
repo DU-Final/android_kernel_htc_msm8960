@@ -1,4 +1,4 @@
-/* Copyright (c) 2010-2013, 2015 The Linux Foundation. All rights reserved.
+/* Copyright (c) 2010-2013, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -1980,9 +1980,6 @@ bool hdmi_common_get_video_format_from_drv_data(struct msm_fb_data_type *mfd)
 	uint32 format;
 	struct fb_var_screeninfo *var = &mfd->fbi->var;
 	bool changed = TRUE;
-
-	if (external_common_state->skip_edid)
-		return false;
 
 	if (userformat) {
 		format = userformat;
