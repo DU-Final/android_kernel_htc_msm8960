@@ -1153,9 +1153,6 @@ static int __qseecom_send_cmd(struct qseecom_dev_handle *data,
 	u32 reqd_len_sb_in = 0;
 	struct qseecom_client_send_data_ireq send_data_req;
 	struct qseecom_command_scm_resp resp;
-	unsigned long flags;
-	struct qseecom_registered_app_list *ptr_app;
-	bool found_app = false;
 
 	reqd_len_sb_in = req->cmd_req_len + req->resp_len;
 
